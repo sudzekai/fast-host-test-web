@@ -1,0 +1,19 @@
+name: Deploy to FastHost
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package
+        run: |
+          zip -r site.zip . -x ".git/*" ".github/*"
+      - name: Deploy
+        run: |
+          curl -f -X POST \
+            -H "X-Api-Key: ${{ secrets.FASTHOST_API_KEY }}" \
+            -H "Content-Type: application/zip" \
+            --data-binary @site.zip \
+            https://api.sudzekai.ru/fast-host/api/deploy/2
