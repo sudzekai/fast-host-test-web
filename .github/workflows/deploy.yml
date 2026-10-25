@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Lint PHP
+        run: php -l index.php
       - name: Package
         run: |
-          zip -r site.zip . -x ".git/*" ".github/*"
+          zip -r site.zip . -x ".git/*" ".github/*" "site.zip"
       - name: Deploy
         run: |
           curl -f -X POST \
